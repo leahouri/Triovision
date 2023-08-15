@@ -13,6 +13,8 @@ import java.io.IOException;
 public class HelloApplication extends Application {
 
     private InfoCenter infoCenter;
+    private TileBoard tileBoard;
+    private Player[] players = new Player[2];
     @Override
     public void start(Stage stage) throws IOException {
         BorderPane root = new BorderPane();
@@ -23,17 +25,28 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
-    private void initLayout(BorderPane root) {
-        initInfoCenter(root);
-        initTileBoard(root);
-        initInventory(root);
+    private void initPlayers(BorderPane root) {
+        for (int i = 0; i < 2; i++) {
+            Player player = new Player(i + 1, initInventory(root));
+            players[i] = player;
+        }
     }
 
-    private void initInventory(BorderPane root) {
+    private void initLayout(BorderPane root) {
+        initInfoCenter(root);
+        initPlayers(root);
+        initTileBoard(root);
+    }
+
+    private Inventory initInventory(BorderPane root) {
+        Inventory inventory = new Inventory(infoCenter);
+        root.getChildren().add(inventory.getStackPane());
+        return inventory;
     }
 
     private void initTileBoard(BorderPane root) {
-        
+        tileBoard = new TileBoard(infoCenter, players);
+        root.getChildren().add(tileBoard.getStackPane());
     }
 
     private void initInfoCenter(BorderPane root) {
@@ -48,6 +61,8 @@ public class HelloApplication extends Application {
             public void handle(ActionEvent actionEvent) {
                 infoCenter.hideStartButton();
                 infoCenter.updateMessage("Player 1's Turn");
+                tileBoard.setVisibility(true);
+                players[0].getInventory().setVisibility(true);
             }
         };
     }
