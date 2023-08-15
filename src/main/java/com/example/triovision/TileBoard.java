@@ -13,7 +13,7 @@ public class TileBoard {
 
     private StackPane pane;
     private InfoCenter infoCenter;
-    private Tile[][] tiles = new Tile[4][4];
+    private Tile[][] tiles;
     private Player[] players;
     private int playerTurn;
     private Paint selectedColor;
@@ -35,6 +35,7 @@ public class TileBoard {
     }
 
     private void addTiles() {
+        tiles = new Tile[4][4];
         for (int row = 0; row < 4; row++) {
             for (int col = 0 ; col < 4; col++) {
                 Tile tile = new Tile();
