@@ -17,6 +17,9 @@ Patterns are generated randomly following the guidelines from "Fig 2", ensuring 
 ### 2 Players Game
 Challenge a friend or a family member in the two-player mode, making the game twice as fun!
 
+### Console Updates
+Updates on who is winning in the IDE Console.
+
 ## Getting Started
 1. Clone this repository.
 2. Compile and run the main Java file.
