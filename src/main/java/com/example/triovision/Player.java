@@ -14,4 +14,12 @@ public class Player {
     public Inventory getInventory() {
         return inventory;
     }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void addPoints(int points) {
+        this.points += points;
+    }
 }

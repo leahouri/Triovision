@@ -1,13 +1,10 @@
 package com.example.triovision;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 
 public class TileBoard {
 
@@ -42,27 +39,39 @@ public class TileBoard {
                 tiles[row][col] = tile;
                 tile.getStackPane().setTranslateX(col * 100 - 150);
                 tile.getStackPane().setTranslateY(row * 100 - 100);
-                tile.setCircleColor(Color.TRANSPARENT);
-                if (row == 0 && (col == 1 || col == 2)) {
-                    tile.setCircleColor(Color.GREEN);
-                }
-                if (row == 3 && (col == 1 || col == 2)) {
-                    tile.setCircleColor(Color.BLUE);
-                }
-
-                if (col == 0 && (row == 1 || row == 2)) {
-                    tile.setCircleColor(Color.RED);
-                }
-                if (col == 3 && (row == 1 || row == 2)) {
-                    tile.setCircleColor(Color.YELLOW);
-                }
-
-                tile.getCircle().setFill(tile.getCircleColor());
+                setDefaultTileColor(tile, row, col);
                 tile.getCircle().setCenterX(col * 100 + 50);
                 tile.getCircle().setCenterY(col * 100 - 100 + 50);
                 tile.getCircle().setRadius(50);
                 tile.getStackPane().getChildren().add(tile.getCircle());
                 pane.getChildren().add(tile.getStackPane());
+            }
+        }
+    }
+
+    private void setDefaultTileColor(Tile tile, int row, int col) {
+        tile.setCircleColor(Color.TRANSPARENT);
+        if (row == 0 && (col == 1 || col == 2)) {
+            tile.setCircleColor(Color.GREEN);
+        }
+        if (row == 3 && (col == 1 || col == 2)) {
+            tile.setCircleColor(Color.BLUE);
+        }
+
+        if (col == 0 && (row == 1 || row == 2)) {
+            tile.setCircleColor(Color.RED);
+        }
+        if (col == 3 && (row == 1 || row == 2)) {
+            tile.setCircleColor(Color.YELLOW);
+        }
+
+        tile.getCircle().setFill(tile.getCircleColor());
+    }
+
+    public void resetBoard() {
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 4; col++) {
+                setDefaultTileColor(tiles[row][col], row, col);
             }
         }
     }
@@ -73,6 +82,7 @@ public class TileBoard {
         if (numberOfTilesSelected == 1) {
             selectedColor = color;
             returnedColor = Color.TRANSPARENT;
+            infoCenter.setInstructions("Please select which (different & empty) tile you want to move your color to.");
         } else if (numberOfTilesSelected == 2) {
             returnedColor = selectedColor;
             unselectTiles();
@@ -104,6 +114,7 @@ public class TileBoard {
     }
 
     public void changePlayerTurn() {
+        players[playerTurn-1].getInventory().setVisibility(false);
         if (playerTurn == 1) {
             playerTurn = 2;
         }
@@ -112,10 +123,107 @@ public class TileBoard {
         }
 
         infoCenter.updateMessage("Player " + playerTurn + "'s Turn");
+        infoCenter.setInstructions("Select a Color you Want to Move");
+        infoCenter.setPlayerPointsMessage("You have " + players[playerTurn-1].getPoints() + " points.");
+        players[playerTurn-1].getInventory().setVisibility(true);
     }
 
     public void setVisibility(boolean visibility) {
         pane.setVisible(visibility);
+    }
+
+    public boolean checkPattern() {
+        boolean result = false;
+        for (TilePattern tilePattern : players[playerTurn - 1].getInventory().getTilePatterns()) {
+            if (!tilePattern.isFound()) {
+                for (int row = 0; row < 4; row++) {
+                    for (int col = 0; col < 4; col++) {
+                        if (tiles[row][col].getCircleColor() == tilePattern.getPatternColors()[2]) {
+                            if (tilePattern.isLShaped() == 1) {
+                                try { // Checks Top-Left Duo
+                                    if (tiles[row - 1][col - 1].getCircleColor() == tilePattern.getPatternColors()[1]) {
+                                        try {
+                                            if (tiles[row - 2][col - 1].getCircleColor() == tilePattern.getPatternColors()[0]) {
+                                                result = true;
+                                                tilePattern.setFound();
+                                                break;
+                                            }
+                                        } catch (Exception e) {
+                                            ;
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    ;
+                                }
+
+                                try { // Checks Bottom-Right Duo
+                                    if (tiles[row + 1][col + 1].getCircleColor() == tilePattern.getPatternColors()[1]) {
+                                        try {
+                                            if (tiles[row + 2][col + 1].getCircleColor() == tilePattern.getPatternColors()[0]) {
+                                                result = true;
+                                                tilePattern.setFound();
+                                                break;
+                                            }
+                                        } catch (Exception e) {
+                                            ;
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    ;
+                                }
+                            } else {
+                                try { // Checks Top-Right Duo
+                                    if (tiles[row - 1][col + 1].getCircleColor() == tilePattern.getPatternColors()[1]) {
+                                        try {
+                                            if (tiles[row - 2][col + 1].getCircleColor() == tilePattern.getPatternColors()[0]) {
+                                                result = true;
+                                                tilePattern.setFound();
+                                                break;
+                                            }
+                                        } catch (Exception e) {
+                                            ;
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    ;
+                                }
+
+                                try { // Checks Bottom-Left Duo
+                                    if (tiles[row + 1][col - 1].getCircleColor() == tilePattern.getPatternColors()[1]) {
+                                        try {
+                                            if (tiles[row + 2][col - 1].getCircleColor() == tilePattern.getPatternColors()[0]) {
+                                                result = true;
+                                                tilePattern.setFound();
+                                                break;
+                                            }
+                                        } catch (Exception e) {
+                                            ;
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    ;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public boolean checkWinner() {
+        boolean result = true;
+        for (TilePattern tilePattern : players[playerTurn - 1].getInventory().getTilePatterns()) {
+            if (!tilePattern.isFound()) {
+                result = false;
+            }
+        }
+        return result;
+    }
+
+    public int getPlayerTurn() {
+        return playerTurn;
     }
 
     public class Tile {
@@ -123,13 +231,14 @@ public class TileBoard {
         private Circle circle;
         private Paint circleColor;
         private boolean selected;
+        private Rectangle border;
 
-        public Tile() {
+        private Tile() {
             selected = false;
             pane = new StackPane();
             pane.setMinSize(100, 100);
 
-            Rectangle border = new Rectangle();
+            border = new Rectangle();
             border.setWidth(100);
             border.setHeight(100);
             border.setFill(Color.TRANSPARENT);
