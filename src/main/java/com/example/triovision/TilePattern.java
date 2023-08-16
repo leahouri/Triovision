@@ -94,6 +94,7 @@ public class TilePattern {
 
     public void setFound() {
         found = true;
+        pane.setVisible(false);
     }
 
     public boolean isFound() {

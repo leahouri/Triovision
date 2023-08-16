@@ -156,6 +156,22 @@ public class TileBoard {
                                     ;
                                 }
 
+                                try { // Checks Top-Horizontal Duo
+                                    if (tiles[row - 1][col + 1].getCircleColor() == tilePattern.getPatternColors()[1]) {
+                                        try {
+                                            if (tiles[row - 1][col + 2].getCircleColor() == tilePattern.getPatternColors()[0]) {
+                                                result = true;
+                                                tilePattern.setFound();
+                                                break;
+                                            }
+                                        } catch (Exception e) {
+                                            ;
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    ;
+                                }
+
                                 try { // Checks Bottom-Right Duo
                                     if (tiles[row + 1][col + 1].getCircleColor() == tilePattern.getPatternColors()[1]) {
                                         try {
@@ -171,6 +187,23 @@ public class TileBoard {
                                 } catch (Exception e) {
                                     ;
                                 }
+
+                                try { // Checks Bottom-Horizontal Duo
+                                    if (tiles[row + 1][col - 1].getCircleColor() == tilePattern.getPatternColors()[1]) {
+                                        try {
+                                            if (tiles[row + 1][col - 2].getCircleColor() == tilePattern.getPatternColors()[0]) {
+                                                result = true;
+                                                tilePattern.setFound();
+                                                break;
+                                            }
+                                        } catch (Exception e) {
+                                            ;
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    ;
+                                }
+
                             } else {
                                 try { // Checks Top-Right Duo
                                     if (tiles[row - 1][col + 1].getCircleColor() == tilePattern.getPatternColors()[1]) {
@@ -188,10 +221,42 @@ public class TileBoard {
                                     ;
                                 }
 
+                                try { // Checks Top-Horizontal Duo
+                                    if (tiles[row - 1][col - 1].getCircleColor() == tilePattern.getPatternColors()[1]) {
+                                        try {
+                                            if (tiles[row - 1][col - 2].getCircleColor() == tilePattern.getPatternColors()[0]) {
+                                                result = true;
+                                                tilePattern.setFound();
+                                                break;
+                                            }
+                                        } catch (Exception e) {
+                                            ;
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    ;
+                                }
+
                                 try { // Checks Bottom-Left Duo
                                     if (tiles[row + 1][col - 1].getCircleColor() == tilePattern.getPatternColors()[1]) {
                                         try {
                                             if (tiles[row + 2][col - 1].getCircleColor() == tilePattern.getPatternColors()[0]) {
+                                                result = true;
+                                                tilePattern.setFound();
+                                                break;
+                                            }
+                                        } catch (Exception e) {
+                                            ;
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    ;
+                                }
+
+                                try { // Checks Bottom-Horizontal Duo
+                                    if (tiles[row + 1][col + 1].getCircleColor() == tilePattern.getPatternColors()[1]) {
+                                        try {
+                                            if (tiles[row + 1][col + 2].getCircleColor() == tilePattern.getPatternColors()[0]) {
                                                 result = true;
                                                 tilePattern.setFound();
                                                 break;
